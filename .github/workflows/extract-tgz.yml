@@ -1,4 +1,4 @@
-name: Extract TGZ into Repo
+name: Extract TGZ or ZIP into Repo
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub Actions
@@ -11,16 +11,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Install Tar Utility
-        run: sudo apt-get install -y tar
+      - name: Install Extraction Tools
+        run: sudo apt-get install -y tar unzip
 
-      - name: Extract TGZ File
+      - name: Check File Type
+        run: file file.tgz
+
+      - name: Extract the File (Auto Detect Format)
         run: |
-          mkdir extracted_files  # Create a folder for extracted files
-          tar -xvzf file.tgz -C extracted_files  # Extract contents into the folder
-
-      - name: Verify Extracted Files (Optional)
-        run: ls -R extracted_files  # List extracted files and folders
+          if file file.tgz | grep -q "gzip compressed"; then
+            echo "Extracting Gzip Compressed Tar File (.tgz or .tar.gz)"
+            mkdir extracted_files
+            tar -xvzf file.tgz -C extracted_files
+          elif file file.tgz | grep -q "POSIX tar archive"; then
+            echo "Extracting Uncompressed Tar File (.tar)"
+            mkdir extracted_files
+            tar -xvf file.tgz -C extracted_files
+          elif file file.tgz | grep -q "Zip archive data"; then
+            echo "Extracting ZIP File (.zip)"
+            mkdir extracted_files
+            unzip file.tgz -d extracted_files
+          else
+            echo "Unknown file format. Extraction failed!"
+            exit 1
+          fi
 
       - name: Commit and Push Extracted Files
         env:
@@ -32,5 +46,5 @@ jobs:
 
           git checkout -b extracted-files  # Create a new branch for extracted files
           git add extracted_files/*  # Add all extracted files
-          git commit -m "Extracted TGZ contents"
+          git commit -m "Extracted archive contents"
           git push origin extracted-files  # Push extracted files to a new branch
