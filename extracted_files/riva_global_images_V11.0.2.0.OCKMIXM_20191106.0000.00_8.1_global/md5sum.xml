@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<root>
+  <digests>
+    <digest hash="md5" name="cust.img">4c73ab0e1bd5e451c42b42df70349747</digest>
+    <digest hash="md5" name="gpt_backup0.bin">f9989021d73fdd9388f05e6919761ff7</digest>
+    <digest hash="md5" name="tz.mbn">09018641717c0230c6ed2657b801cb72</digest>
+    <digest hash="md5" name="boot.img">48afdd3147679c0e5dab7c60706dcfb8</digest>
+    <digest hash="md5" name="sbl1.mbn">c5d91c348f228a7601ffdc84f96878b4</digest>
+    <digest hash="md5" name="keymaster.mbn">2263b4dbfd3a66e5718069a67c39c1f0</digest>
+    <digest hash="md5" name="system.img">e8085c726be68f7ccba2b995e92e631b</digest>
+    <digest hash="md5" name="elf_path.txt">df9d430a03da3347e821c4138ed908ff</digest>
+    <digest hash="md5" name="patch0.xml">5a0a2e8b0418d879caa70444f021e696</digest>
+    <digest hash="md5" name="userdata.img">19d2ddad952846224e610539f26caf3d</digest>
+    <digest hash="md5" name="adspso.bin">4d51bc9fda466437acc8bc6a668d9cd7</digest>
+    <digest hash="md5" name="gpt_both0.bin">3f3672a0ec2185b16d15139bdc2da73e</digest>
+    <digest hash="md5" name="misc.img">0829f71740aab1ab98b33eae21dee122</digest>
+    <digest hash="md5" name="persist.img">8269735114c76fa84b5c7acd24d7cb6d</digest>
+    <digest hash="md5" name="cmnlib_30.mbn">e55b47990e6bf34353e1f7094e31e3d0</digest>
+    <digest hash="md5" name="recovery.img">58031285363e44ae3ceab21661d7815c</digest>
+    <digest hash="md5" name="devcfg.mbn">893924ce7af734e7a585d3e3521072fa</digest>
+    <digest hash="md5" name="cmnlib64.mbn">1e8afc33ba9560d830b06c4f1f58dc46</digest>
+    <digest hash="md5" name="prog_emmc_firehose_8917_ddr.mbn">016117349051bc912d33724fddb4e4fc</digest>
+    <digest hash="md5" name="rpm.mbn">76e2059eaebc8d16d4aefaaae3ed30b5</digest>
+    <digest hash="md5" name="splash.img">c0f035ba5359c2fd6ab6f11e422f6a34</digest>
+    <digest hash="md5" name="rawprogram0.xml">7bb09f1588706af971689612d0b3b589</digest>
+    <digest hash="md5" name="cache.img">6829e8cfdd55c977b96880c0ab2d8497</digest>
+    <digest hash="md5" name="emmc_appsboot.mbn">f68f09d06ca0a70542c8e948a5191111</digest>
+    <digest hash="md5" name="dummy.img">0829f71740aab1ab98b33eae21dee122</digest>
+    <digest hash="md5" name="sparsecrclist.txt">1b4535747fb1d77b846232e24d08f62c</digest>
+    <digest hash="md5" name="NON-HLOS.bin">c388e0a4bb98c7dbdad3b3b5c8c6f750</digest>
+    <digest hash="md5" name="crclist.txt">46c7f4cb43dc02296a0c8606087de7e1</digest>
+    <digest hash="md5" name="gpt_main0.bin">0bc483d4494961c6a56ddc65e5c1c8b8</digest>
+    <digest hash="md5" name="lksecapp.mbn">4893556c88f4139998f4177b7384be07</digest>
+  </digests>
+</root>

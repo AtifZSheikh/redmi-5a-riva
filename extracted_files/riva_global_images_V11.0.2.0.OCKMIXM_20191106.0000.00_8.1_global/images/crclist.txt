@@ -1,0 +1,25 @@
+CRC-LIST
+cmnlib 0x85f825de
+keymasterbak 0x6dd49b12
+cust 0x828f2c0f
+userdata 0xb02d70c9
+devcfgbak 0xbdde03ef
+keymaster 0x6dd49b12
+cmnlibbak 0x85f825de
+lksecapp 0xe92b54e3
+rpm 0x2042b039
+tzbak 0xb58f94c5
+sbl1bak 0x37e27a26
+abootbak 0x67dfc40
+sbl1 0x37e27a26
+tz 0xb58f94c5
+recovery 0xb3191835
+lksecappbak 0xe92b54e3
+cache 0xd508d54c
+boot 0xbae37a57
+dsp 0x37a74c76
+aboot 0x67dfc40
+splash 0xa7632e44
+rpmbak 0x2042b039
+modem 0x10bb72b1
+devcfg 0xbdde03ef
