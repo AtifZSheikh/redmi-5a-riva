@@ -11,6 +11,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: Debug File Format
+        run: |
+          echo "File command output:"
+          file file.tgz
+          echo "Head of the file:"
+          head -c 20 file.tgz | xxd
+
       - name: Install Extraction Tools
         run: sudo apt-get install -y tar unzip
 
