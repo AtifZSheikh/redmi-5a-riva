@@ -1,0 +1,86 @@
+name: Download, Extract, and Push with LFS
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions
+
+jobs:
+  download-extract-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository with LFS
+        uses: actions/checkout@v3
+        with:
+          lfs: true  # Enable Git LFS support
+
+      - name: Install Required Tools
+        run: sudo apt-get install -y tar unzip aria2
+
+      - name: Download File (ZIP or TGZ)
+        run: |
+          FILE_URL="https://cdnorg.d.miui.com/V11.0.2.0.OCKMIXM/riva_global_images_V11.0.2.0.OCKMIXM_20191106.0000.00_8.1_global_605da3d46d.tgz"  # Change this URL
+          OUTPUT_FILE="downloaded_file"
+
+          echo "🚀 Downloading file from $FILE_URL..."
+          aria2c -x 16 -s 16 -k 1M --allow-overwrite=true -o $OUTPUT_FILE "$FILE_URL"
+
+          echo "✅ Download completed. Checking file size..."
+          ls -lh $OUTPUT_FILE
+
+      - name: Rename File Based on Type
+        run: |
+          FILE_TYPE=$(file --mime-type -b downloaded_file)
+          if [[ "$FILE_TYPE" == "application/gzip" ]]; then
+            mv downloaded_file file.tgz
+          elif [[ "$FILE_TYPE" == "application/zip" ]]; then
+            mv downloaded_file file.zip
+          else
+            echo "❌ ERROR: Unknown file format!"
+            exit 1
+          fi
+
+      - name: Verify File Format
+        run: |
+          echo "🔍 Checking file format..."
+          file file.*
+
+          echo "🔍 Displaying first 20 bytes in hex:"
+          head -c 20 file.* | xxd
+
+      - name: Extract File (ZIP or TGZ)
+        run: |
+          mkdir -p extracted_files
+
+          if [[ -f "file.tgz" ]]; then
+            echo "📦 Extracting Gzip Compressed Tar File (.tgz or .tar.gz)..."
+            tar -xvzf file.tgz -C extracted_files
+          elif [[ -f "file.zip" ]]; then
+            echo "📦 Extracting ZIP file..."
+            unzip file.zip -d extracted_files
+          else
+            echo "❌ ERROR: No valid archive file found!"
+            exit 1
+          fi
+
+      - name: Verify Extracted Files
+        run: |
+          echo "📂 Extracted files:"
+          ls -R extracted_files
+
+      - name: Enable Git LFS
+        run: |
+          git lfs install
+          git lfs track "extracted_files/*"
+
+      - name: Commit and Push Extracted Files
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}  # GitHub Personal Access Token (store in secrets)
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
+
+          git checkout -b extracted-files  # Create a new branch for extracted files
+          git add extracted_files/*  # Add all extracted files
+          git commit -m "Extracted and added files from downloaded archive"
+          git push origin extracted-files  # Push extracted files to new branch
