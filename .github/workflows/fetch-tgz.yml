@@ -1,4 +1,4 @@
-name: Download and Extract TGZ
+name: Download and Extract TGZ Fast
 
 on:
   workflow_dispatch:  # Allows manual triggering from GitHub Actions
@@ -11,9 +11,12 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Download TGZ File
+      - name: Install aria2 (for ultra-fast downloads)
+        run: sudo apt-get install -y aria2
+
+      - name: Download TGZ File with aria2 (16 connections)
         run: |
-          curl -L -o file.tgz "https://bigota.d.miui.com/V11.0.2.0.OCKMIXM/riva_global_images_V11.0.2.0.OCKMIXM_20191106.0000.00_8.1_global_605da3d46d.tgz"
+          aria2c -x 16 -s 16 -k 1M -o file.tgz "https://cdnorg.d.miui.com/V11.0.2.0.OCKMIXM/riva_global_images_V11.0.2.0.OCKMIXM_20191106.0000.00_8.1_global_605da3d46d.tgz"
 
       - name: Extract TGZ File
         run: |
@@ -27,4 +30,4 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git add extracted_files
           git commit -m "Added extracted TGZ contents"
-          git push 
+          git push
