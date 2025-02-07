@@ -31,6 +31,18 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
+          
+          git checkout -b update-files  # Create a new branch
           git add extracted_files
           git commit -m "Added extracted TGZ contents"
-          git push
+          git push origin update-files # Push to the new branch
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh -y
+
+
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --base main --head update-files --title "Auto: Extracted TGZ" --body "This PR adds the extracted TGZ files."
