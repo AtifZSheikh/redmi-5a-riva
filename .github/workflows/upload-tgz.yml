@@ -1,0 +1,44 @@
+name: Download and Push Large TGZ File with LFS
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions
+
+jobs:
+  download-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          lfs: true  # Enable LFS support
+
+      - name: Install Git LFS
+        run: |
+          sudo apt-get install git-lfs
+          git lfs install
+
+      - name: Install aria2 (Ultra-Fast Download)
+        run: sudo apt-get install -y aria2
+
+      - name: Download TGZ File with aria2
+        run: |
+          aria2c -x 16 -s 16 -k 1M -o file.tgz "https://cdnorg.d.miui.com/V11.0.2.0.OCKMIXM/riva_global_images_V11.0.2.0.OCKMIXM_20191106.0000.00_8.1_global_605da3d46d.tgz"
+
+      - name: Track TGZ File with Git LFS
+        run: |
+          git lfs track "*.tgz"  # Track all .tgz files using LFS
+          git add .gitattributes  # Commit tracking config
+
+      - name: Commit and Push Changes with LFS
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
+          
+          git checkout -b update-files  # Create a new branch
+          git add file.tgz
+          git commit -m "Added large TGZ file using LFS"
+          git push origin update-files  # Push to new branch
