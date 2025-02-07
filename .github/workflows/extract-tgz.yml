@@ -1,0 +1,36 @@
+name: Extract TGZ into Repo
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions
+
+jobs:
+  extract-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Tar Utility
+        run: sudo apt-get install -y tar
+
+      - name: Extract TGZ File
+        run: |
+          mkdir extracted_files  # Create a folder for extracted files
+          tar -xvzf file.tgz -C extracted_files  # Extract contents into the folder
+
+      - name: Verify Extracted Files (Optional)
+        run: ls -R extracted_files  # List extracted files and folders
+
+      - name: Commit and Push Extracted Files
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
+
+          git checkout -b extracted-files  # Create a new branch for extracted files
+          git add extracted_files/*  # Add all extracted files
+          git commit -m "Extracted TGZ contents"
+          git push origin extracted-files  # Push extracted files to a new branch
