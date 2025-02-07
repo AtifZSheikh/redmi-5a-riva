@@ -1,0 +1,30 @@
+name: Download and Extract TGZ
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub Actions
+
+jobs:
+  download-extract:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Download TGZ File
+        run: |
+          curl -L -o file.tgz "https://bigota.d.miui.com/V11.0.2.0.OCKMIXM/riva_global_images_V11.0.2.0.OCKMIXM_20191106.0000.00_8.1_global_605da3d46d.tgz"
+
+      - name: Extract TGZ File
+        run: |
+          mkdir extracted_files
+          tar -xzf file.tgz -C extracted_files
+          rm file.tgz  # Delete TGZ after extraction (optional)
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add extracted_files
+          git commit -m "Added extracted TGZ contents"
+          git push 
