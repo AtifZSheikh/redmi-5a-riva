@@ -1,6 +1,6 @@
 - name: Debug File Format
-        run: |
-          echo "Checking file format..."
-          file file.tgz
-          echo "Displaying first 20 bytes in hex:"
-          head -c 20 file.tgz | xxd
+  run: |
+     echo "Checking file format..."
+     file file.tgz
+     echo "Displaying first 20 bytes in hex:"
+     head -c 20 file.tgz | xxd
